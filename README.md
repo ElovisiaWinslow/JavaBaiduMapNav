@@ -133,12 +133,22 @@ COORD|南京站|118.796875|32.085299
 - **数据结构**：邻接表图 + 优先队列 (Dijkstra算法)
 - **算法**：加权最短路径搜索，支持多种策略
 - **文件IO**：自定义文本格式解析器
+- <img width="624" height="386" alt="image" src="https://github.com/user-attachments/assets/d0084037-ba1f-4744-9bae-aeae3d006a4e" />
+- <img width="624" height="386" alt="image" src="https://github.com/user-attachments/assets/75632ad1-a21d-4e3e-bd70-aa523d7d463b" />
+- <img width="624" height="386" alt="image" src="https://github.com/user-attachments/assets/cefc31f9-6a7b-4307-8d37-fc333cdf6db6" />
+
+
+
 
 ### Web交互地图
 - **地图引擎**：百度地图GL API（WebGL）
 - **前端技术**：HTML5, CSS3, JavaScript (ES6+)
 - **架构**：模块化JavaScript，面向对象设计
 - **交互**：鼠标/触摸事件，3D视图控制
+- <img width="624" height="396" alt="image" src="https://github.com/user-attachments/assets/e027e32a-0efd-4509-a0c3-58c73579d0a5" />
+- <img width="624" height="396" alt="image" src="https://github.com/user-attachments/assets/eb2ae840-ce5e-4d08-95f3-a5006a82bced" />
+
+
 
 ## 📊 导航算法
 
