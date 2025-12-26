@@ -1,0 +1,270 @@
+/* style.css - Final Fixed Version */
+:root {
+    --primary-color: #4facfe;
+    --primary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --secondary-color: #66a6ff;
+    --text-dark: #333;
+    --text-light: #666;
+    --bg-glass: rgba(255, 255, 255, 0.92);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.12);
+    --border-radius: 12px;
+    --border-glass: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+body, html { width: 100%; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; overflow: hidden; background: #f0f2f5; }
+
+/* --- 核心布局 --- */
+#app { width: 100%; height: 100%; position: relative; }
+#map-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 0; }
+#subway-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; z-index: -1; opacity: 0; transition: opacity 0.3s ease; }
+
+/* --- 品牌标题 --- */
+.brand-header { position: absolute; top: 20px; left: 20px; z-index: 100; pointer-events: none; transition: all 0.3s ease; }
+.brand-header h1 { font-size: 24px; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 10px rgba(79, 172, 254, 0.2); padding-left: 10px; }
+
+/* --- 悬浮侧边栏 --- */
+.floating-sidebar { 
+    position: absolute; 
+    top: 70px; 
+    left: 20px; 
+    width: 360px; 
+    max-height: calc(100% - 90px); 
+    background: var(--bg-glass); 
+    backdrop-filter: blur(16px); 
+    -webkit-backdrop-filter: blur(16px);
+    border: var(--border-glass);
+    border-radius: var(--border-radius); 
+    box-shadow: var(--shadow-soft); 
+    z-index: 1000; 
+    padding: 20px; 
+    overflow-y: auto; 
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); 
+}
+
+/* 自定义侧边栏滚动条 */
+.floating-sidebar::-webkit-scrollbar { width: 6px; }
+.floating-sidebar::-webkit-scrollbar-track { background: transparent; }
+.floating-sidebar::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.15); border-radius: 10px; }
+.floating-sidebar::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 0, 0, 0.25); }
+
+.floating-sidebar.collapsed { transform: translateX(-420px); }
+
+/* --- 折叠按钮 --- */
+.toggle-btn { 
+    position: absolute; 
+    top: 70px; 
+    left: 390px; 
+    width: 32px; 
+    height: 48px; 
+    background: white; 
+    border: none; 
+    border-radius: 0 8px 8px 0; 
+    box-shadow: 4px 0 8px rgba(0,0,0,0.05); 
+    cursor: pointer; 
+    z-index: 999; 
+    color: var(--secondary-color); 
+    transition: all 0.3s ease; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+.toggle-btn:hover { background: #f8f9fa; color: var(--primary-color); }
+.floating-sidebar.collapsed + .toggle-btn { left: 0; border-radius: 0 8px 8px 0; }
+
+/* --- 路线规划面板 --- */
+.route-controls-panel { background: transparent; border: none; padding: 0; margin-bottom: 25px; }
+.route-controls-panel h3 { font-size: 18px; color: var(--text-dark); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+
+/* 输入组样式 */
+.input-group { 
+    background: #fff; 
+    border: 1px solid #e9ecef; 
+    border-radius: 8px; 
+    padding: 10px 12px; 
+    margin-bottom: 12px; 
+    display: flex; 
+    align-items: center; 
+    transition: all 0.2s ease; 
+}
+.input-group:focus-within { 
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.15); 
+    border-color: var(--secondary-color); 
+    transform: translateY(-1px); 
+}
+
+/* 起终点圆点装饰 */
+.input-group label { 
+    font-size: 0; 
+    width: 10px; 
+    height: 10px; 
+    border-radius: 50%; 
+    margin-right: 12px; 
+    flex-shrink: 0; 
+    position: relative;
+}
+
+/* --- 修复点：正确匹配第1个(起点)和第2个(终点) div --- */
+/* 第1个 div 匹配起点 (绿色) */
+.input-group:nth-of-type(1) label { 
+    background: #52c41a; 
+    box-shadow: 0 0 0 3px rgba(82, 196, 26, 0.15); 
+}
+/* 第2个 div 匹配终点 (红色) */
+.input-group:nth-of-type(2) label { 
+    background: #ff4d4f; 
+    box-shadow: 0 0 0 3px rgba(255, 77, 79, 0.15); 
+}
+
+.input-group input { border: none; background: transparent; font-size: 14px; color: #333; flex: 1; padding: 0 5px; font-weight: 500; }
+.input-group input::placeholder { color: #adb5bd; }
+
+.btn-small { background: rgba(79, 172, 254, 0.1); color: var(--secondary-color); border: none; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+.btn-small:hover { background: var(--secondary-color); color: white; }
+.btn-clear { background: transparent; color: #ccc; font-size: 18px; margin-left: 8px; border:none; cursor: pointer; display: flex; align-items: center; }
+.btn-clear:hover { color: #ff6b6b; }
+
+.mode-selector { margin: 15px 0; gap: 8px !important; }
+.mode-selector label { font-size: 12px; color: #888; display: block; margin-bottom: 6px; font-weight: 600; }
+.mode-selector select { width: 48%; padding: 8px 12px; border: 1px solid #e9ecef; border-radius: 6px; background: white; font-size: 13px; color: #495057; cursor: pointer; outline: none; }
+.mode-selector select:focus { border-color: var(--secondary-color); }
+
+.button-group { gap: 10px; margin-top: 20px; display: flex; }
+.btn { flex: 2; background: var(--primary-gradient); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3); cursor: pointer; transition: all 0.2s; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4); }
+.btn:active { transform: translateY(1px); }
+.btn.secondary { flex: 1; background: #f1f3f5; color: #495057; box-shadow: none; }
+.btn.secondary:hover { background: #e9ecef; }
+
+/* --- 底部控制区 --- */
+.controls-panel { border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; margin-top: 20px; }
+.controls-panel h4 { font-size: 12px; color: #adb5bd; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; font-weight: 700; }
+
+.control-group { margin-bottom: 15px; }
+.control-group label { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 8px; }
+
+.slider-container { background: #fff; padding: 8px 12px; border: 1px solid #e9ecef; border-radius: 8px; display: flex; align-items: center; gap: 10px; color: var(--secondary-color); }
+.slider-container input[type="range"] { flex: 1; accent-color: var(--secondary-color); cursor: pointer; }
+.slider-container i.small { font-size: 10px; opacity: 0.7; }
+
+.action-buttons { display: flex; gap: 10px; margin-top: 15px; }
+.btn-icon { flex: 1; padding: 10px; border: 1px solid #e9ecef; background: white; border-radius: 8px; color: var(--text-dark); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+.btn-icon:hover { border-color: var(--secondary-color); color: var(--secondary-color); transform: translateY(-1px); }
+.btn-icon.active { background: var(--secondary-color); color: white; border-color: var(--secondary-color); box-shadow: 0 4px 12px rgba(102, 166, 255, 0.3); }
+
+.app-footer { margin-top: 20px; text-align: center; font-size: 11px; color: #adb5bd; }
+
+/* --- 路线结果列表 (Timeline Style) --- */
+.route-result { background: rgba(255,255,255,0.8); border-radius: 12px; margin-top: 20px; border: 1px solid rgba(0,0,0,0.05); overflow: hidden; animation: slideIn 0.3s ease; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.result-header { background: rgba(248, 249, 250, 0.8); padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+.result-header h4 { font-size: 14px; color: #333; margin: 0; }
+.result-summary { display: flex; gap: 12px; }
+.tag-info { font-size: 13px; color: var(--primary-color); font-weight: 600; background: rgba(79, 172, 254, 0.1); padding: 4px 8px; border-radius: 4px; }
+
+/* 结果列表 - 时间轴 */
+.result-steps-container { max-height: 300px; overflow-y: auto; padding: 15px 15px 15px 5px; }
+.result-steps-container::-webkit-scrollbar { width: 4px; }
+.result-steps-container::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+
+.steps-list { list-style: none; position: relative; padding-left: 10px; }
+.steps-list::before { content: ''; position: absolute; top: 15px; bottom: 15px; left: 22px; width: 2px; background: #e9ecef; z-index: 0; }
+
+.step-item { display: flex; position: relative; padding-bottom: 20px; z-index: 1; }
+.step-item:last-child { padding-bottom: 0; }
+
+.step-icon { width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 11px; margin-right: 15px; flex-shrink: 0; color: white; z-index: 2; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+.step-icon-normal { background: #fab005; }
+.step-icon-walk { background: #52c41a; font-size: 12px; }
+.step-icon-transit { background: #1890ff; font-size: 12px; }
+
+.step-content { flex: 1; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
+.step-text { font-size: 13px; color: #444; line-height: 1.5; margin-bottom: 4px; }
+.step-text b { color: #000; font-weight: 600; }
+.sub-info { color: #888; font-size: 12px; display: block; margin-top: 2px; }
+.step-meta { font-size: 11px; color: #999; background: #f8f9fa; display: inline-block; padding: 2px 6px; border-radius: 4px; margin-top: 5px; }
+
+/* --- Autocomplete 层级修复 --- */
+.tangram-suggestion-main { z-index: 2000 !important; border-radius: 0 0 8px 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border: none; }
+
+/* --- 地铁相关样式 --- */
+#subway-loader { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); display: flex; justify-content: center; align-items: center; font-size: 16px; color: var(--secondary-color); z-index: 2000; gap: 10px; backdrop-filter: blur(5px); }
+
+.subway-ui-panel { 
+    position: absolute; top: 70px; right: 20px; width: 320px; max-height: calc(100% - 90px); 
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
+    border-radius: 12px; box-shadow: -5px 0 25px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.5);
+    z-index: 1000; display: flex; flex-direction: column; overflow: hidden; 
+    transition: transform 0.3s ease, opacity 0.3s ease; 
+}
+
+.subway-search-box { padding: 15px; background: #f8f9fa; border-bottom: 1px solid #eee; flex-shrink: 0; }
+.subway-inputs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.subway-inputs input { padding: 8px; border: 1px solid #eee; border-radius: 6px; font-size: 13px; }
+.subway-inputs input:focus { border-color: var(--secondary-color); box-shadow: 0 0 0 2px rgba(79,172,254,0.1); }
+.subway-actions { display: flex; gap: 8px; }
+
+#subway-result-panel { flex-grow: 1; overflow-y: auto; background: white; min-height: 50px; }
+#subway-result-panel .dr_content { border: none !important; }
+
+.station-info-card { padding: 15px; background: #fff; border-top: 1px solid #eee; animation: slideIn 0.2s ease; }
+.station-info-card h4 { margin: 0 0 10px 0; color: #333; display: flex; justify-content: space-between; align-items: center; }
+.tag { background: #e1f5fe; color: #0288d1; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+.close-card-btn { cursor: pointer; color: #999; background: none; border: none; font-size: 20px; line-height: 1; }
+
+.subway-tabs { display: flex; border-bottom: 1px solid #eee; background: #fff; }
+.subway-tab-btn { flex: 1; padding: 12px; border: none; background: none; font-size: 14px; color: #666; cursor: pointer; font-weight: 500; transition: all 0.3s; position: relative; }
+.subway-tab-btn.active { color: var(--primary-color); }
+.subway-tab-btn.active::after { content:''; position: absolute; bottom: 0; left: 25%; width: 50%; height: 2px; background: var(--primary-color); }
+
+.tab-content { display: none; height: 100%; overflow-y: auto; }
+.tab-content.active { display: block; }
+.line-select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; font-size: 14px; outline: none; }
+
+.line-header-badge { display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; }
+.line-color-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; box-shadow: 0 0 0 2px white, 0 0 0 4px rgba(0,0,0,0.05); }
+.line-name-title { font-weight: bold; font-size: 15px; color: #333; }
+
+.station-list-item { padding: 10px 12px; border-bottom: 1px solid #f5f5f5; font-size: 13px; color: #555; display: flex; align-items: center; cursor: pointer; transition: background 0.2s; }
+.station-list-item:hover { background: #f0f7ff; color: var(--primary-color); }
+.station-list-item:last-child { border-bottom: none; }
+.station-dot { width: 8px; height: 8px; background: #ddd; border-radius: 50%; margin-right: 12px; transition: all 0.2s; }
+.station-list-item:hover .station-dot { background: var(--primary-color); transform: scale(1.2); }
+
+.modal-btns { display: flex; gap: 8px; margin-top: 10px; }
+.btn-xs { flex: 1; padding: 6px 0; background: #f1f3f5; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; color: #495057; transition: all 0.2s; }
+.btn-xs:hover { background: var(--secondary-color); color: white; }
+
+/* --- 响应式适配 --- */
+@media (max-width: 480px) {
+    .brand-header { top: 10px; left: 10px; transform: scale(0.85); transform-origin: top left; }
+    
+    .floating-sidebar { 
+        top: auto; bottom: 0; left: 0; 
+        width: 100%; max-height: 60vh; 
+        border-radius: 20px 20px 0 0; 
+        border-bottom: none;
+        padding-bottom: 30px;
+    }
+    .floating-sidebar.collapsed { transform: translateY(100%); }
+
+    .toggle-btn { 
+        top: auto; bottom: 60vh; left: 50%; 
+        transform: translateX(-50%) rotate(-90deg);
+        width: 48px; height: 28px; 
+        border-radius: 8px 8px 0 0; 
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    }
+    .floating-sidebar.collapsed + .toggle-btn { bottom: 0; left: 50%; border-radius: 8px 8px 0 0; transform: translateX(-50%) rotate(90deg); }
+
+    .subway-ui-panel {
+        width: 100%; top: auto; bottom: 0; right: 0;
+        border-radius: 20px 20px 0 0;
+        max-height: 60vh;
+    }
+    
+    .button-group { flex-direction: column; }
+    .btn.secondary { width: 100%; }
+}
